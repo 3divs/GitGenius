@@ -20,6 +20,7 @@ if (Meteor.isClient) {
   Meteor.Router.add({
     '/': 'home',
     '/addarepo': 'addarepo',
+    '/listfiles': 'listfiles'
     '/about': 'about',
     '/contact': 'contact'
   });
@@ -56,6 +57,14 @@ $.ajax({
     }
   };
 
+  Repos = new Meteor.Collection("repos");
+  Commits = new Meteor.Collection("commits");
+  Files = new Meteor.Collection("files");
+  Owners = new Meteor.Collection("owners");
+
+  Template.underscoreDir.files = function() {
+    return Files.find({}, {sort: {score: -1, name: 1}});
+  };
 }
 
 if (Meteor.isServer) {

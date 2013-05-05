@@ -120,7 +120,10 @@
                 <li><a href="contact" class='contact'>Contact</a></li>
               </ul>
               <form class="navbar-form pull-right">
-                <div class="github-button">{{loginButtons}}</div>
+                <div class="github-button">    <div style="float right">
+      {{loginbuttons align="right"}}
+    </div>
+</div>
               </form>
             </div><!--/.nav-collapse -->
           </div>
@@ -166,5 +169,36 @@
 
     </template>
 
+    <template name="3divs-login">
+      <form class="navbar-form pull-right">
+        <input class="span2" type="text" placeholder="Email">
+        <input class="span2" type="password" placeholder="Password">
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+    </template>
 
-    
+    <template name="github-login">
+      <div class="github-button">{{loginButtons}}</div>
+    </template>
+
+  <template name="meteor-login">
+    <div style="float right">
+      {{loginbuttons align="right"}}
+    </div>
+  </template>
+
+  <template name='underscoreDir'>
+    var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
+
+    for (var i = 0; i < files.length; i++) {
+      Files.insert({name: files[i][0], path: files[i][1]});
+    }
+
+    {{#each files}}
+      {{>file_listing}}
+    {{/each}}
+  </template>
+
+  <template name="file_listing">
+    <a href="{{url}}">{{name}}</a>
+  </template>
