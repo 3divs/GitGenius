@@ -120,7 +120,7 @@
                 <li><a href="contact" class='contact'>Contact</a></li>
               </ul>
               <form class="navbar-form pull-right">
-                <div class="github-button">{{loginButtons}}</div>
+                {{>3divs-login}}
               </form>
             </div><!--/.nav-collapse -->
           </div>
@@ -165,3 +165,16 @@
       <script src="./assets/js/bootstrap-typeahead.js"></script>
 
     </template>
+
+    <template name="3divs-login">
+      <form class="navbar-form pull-right">
+        <input class="span2" type="text" placeholder="Email">
+        <input class="span2" type="password" placeholder="Password">
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+    </template>
+
+    <template name="github-login">
+      <div class="github-button">{{loginButtons}}</div>
+    </template>
+
