@@ -1,22 +1,37 @@
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to GitGenius.";
-  };
-
-Meteor.loginWithGithub({
+  Meteor.loginWithGithub({
   requestPermissions: ['user', 'repo']
-}, function (err) {
+  }, function (err) {
   if (err)
     Session.set('errorMessage', err.reason || 'Unknown error');
-});
-
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
-    }
   });
+
+  Meteor.Router.add({
+    '/': 'home',
+    '/addarepo': 'addarepo',
+    '/about': 'about',
+    '/contact': 'contact'
+  });
+
+  Template.menu_bar.events = {
+
+    'click .addarepo': function() {
+        Meteor.Router.to('/addarepo');
+    },
+
+    'click .about': function() {
+    Meteor.Router.to('/about');
+    },
+
+    'click .contact': function() {
+    Meteor.Router.to('/contact');
+    },
+
+    'click .home': function() {
+    Meteor.Router.to('/home');
+    }
+  };
+
 }
 
 if (Meteor.isServer) {

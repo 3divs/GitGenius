@@ -44,14 +44,12 @@
   </head>
 
   <body>
-
-      {{>menu_bar}}
-      {{>home}}
-      {{>script_tags}}
-
+      {{renderPage}}
   </body>
 
     <template name="home">
+      {{>script_tags}}
+      {{>menu_bar}}
       <div class="container">
    <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
@@ -91,10 +89,10 @@
             <a class="brand" href="#">Git Genius</a>
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">Add a Repo</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="active"><a href="/" class='home'>Home</a></li>
+                <li><a href="addarepo" class="addarepo">Add a Repo</a></li>
+                <li><a href="about" class='about'>About</a></li>
+                <li><a href="contact" class='contact'>Contact</a></li>
               </ul>
               <form class="navbar-form pull-right">
                 <div class="github-button">{{loginButtons}}</div>
@@ -104,6 +102,25 @@
         </div>
       </div>
     </template>
+
+    <template name="addarepo">
+      <h1>Add a Repo Genius</h1>
+      {{>script_tags}}
+      {{>menu_bar}}
+    </template>
+
+    <template name="about">
+      <h1>About</h1>
+      {{>script_tags}}
+      {{>menu_bar}}
+    </template>
+
+    <template name="contact">
+      <h1>Contact 3 Divs</h1>
+      {{>script_tags}}
+      {{>menu_bar}}
+    </template>
+
     <template name="script_tags">
       <!-- Le javascript
       ================================================== -->
@@ -123,3 +140,6 @@
       <script src="./assets/js/bootstrap-typeahead.js"></script>
 
     </template>
+
+
+    
