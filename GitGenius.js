@@ -20,8 +20,12 @@ if (Meteor.isClient) {
   Meteor.Router.add({
     '/': 'home',
     '/addarepo': 'addarepo',
+    '/underscoreDir': 'underscoreDir',
+    '/jekyllDir': 'jekyllDir',
+    '/bootstrapDir': 'bootstrapDir',
     '/about': 'about',
-    '/contact': 'contact'
+    '/contact': 'contact',
+    '/underscorejs': 'underscorejs'
   });
 
 /*
@@ -43,6 +47,10 @@ $.ajax({
         Meteor.Router.to('/addarepo');
     },
 
+    'click .underscoreDir': function() {
+        Meteor.Router.to('/underscoreDir');
+    },
+
     'click .about': function() {
     Meteor.Router.to('/about');
     },
@@ -56,6 +64,30 @@ $.ajax({
     }
   };
 
+  Template.home.events = {
+    'click .underscoreDir': function() {
+        Meteor.Router.to('/underscoreDir');
+    },
+    'click .jekyllDir': function() {
+        Meteor.Router.to('/jekyllDir');
+    },
+    'click .bootstrapDir': function() {
+        Meteor.Router.to('/bootstrapDir');
+    }
+  }
+
+  Template.repo_files.events = {
+    'click .underscoreDir': function() {
+        Meteor.Router.to('/underscorejs');
+    }
+  };
+
+
+  Files = new Meteor.Collection("files");
+
+  Template.underscoreDir.files = function() {
+    return Files.find({});
+  };
 }
 
 if (Meteor.isServer) {

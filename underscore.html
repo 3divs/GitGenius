@@ -1,6 +1,21 @@
+<template name='underscoreDir_old'>
+  var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
 
-<template name='underscoreDir'>
-  <a href="#">docs</a>
+  for (var i = 0; i < files.length; i++) {
+    Files.insert({name: files[i][0], path: files[i][1]});
+  }
+
+  {{#each files}}
+    {{>file_listing}}
+  {{/each}}
+
+</template>
+
+<template name="file_listing_old">
+  <a href="{{url}}">{{name}}</a>
+</template>
+
+<!--   <a href="#">docs</a>
   <a href="#">test</a>
   <a href="#">CNAME</a>
   <a href="#">CONTRIBUTING.md</a>
@@ -11,4 +26,4 @@
   <a href="#">package.json</a>
   <a href="#">underscore-min.js</a>
   <a href="./underscorejs">underscore.js</a>
-</template>
+ -->
