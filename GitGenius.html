@@ -2,19 +2,14 @@
     <meta charset="utf-8">
     <title>GitGenius Repository Anotations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
 
+    for (var i = 0; i < files.length; i++) {
+      Files.insert({name: files[i][0], path: files[i][1]});
+    }
+    </script>
 
-  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
-  <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-  <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-  <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-
-
-<script>
-  hljs.tabReplace = '    ';
-  hljs.initHighlightingOnLoad();
-  </script>
     <script>
       var Firebase = require('firebase');
       var myRootRef = new Firebase('https://gitgenius.meteor.com/');
@@ -75,22 +70,20 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="span4">
-          <h2><a href='./underscore'>Underscore.js</a></h2>
+          <h2><a href='underscoreDir'>Underscore.js</a></h2>
           <p>Underscore.js is a utility-belt library for JavaScript that provides support for the usual functional suspects (each, map, reduce, filter...) without extending any core JavaScript objects.  For Docs, License, Tests, and pre-packed downloads, see: <a href="http://underscorejs.org">underscorejs.org</a></p>
-          <p><a class="btn" href="./underscore">View code &raquo;</a></p>
+          <p><a class="btn" href="underscoreDir" >View code &raquo;</a></p>
         </div>
         <div class="span4">
-          <h2><a href='#'>bootstrap</a></h2>
+          <h2><a href='bootstrapDir'>bootstrap</a></h2>
           <p>Bootstrap is a sleek, intuitive, and powerful front-end framework for faster and easier web development, created and maintained by Mark Otto and Jacob Thornton.
 
         To get started, checkout <a href="http://getbootstrap.com">http://getbootstrap.com</a></p>
-          <p><a class="btn" href="#">View code &raquo;</a></p>
-       </div>
+          <p><a class="btn" href="bootstrapDir" >View code &raquo;</a></p>       </div>
         <div class="span4">
-          <h2><a href='#'>jekyll-hook</a></h2>
+          <h2><a href='jekyllDir'>jekyll-hook</a></h2>
           <p>A server that listens for webhook posts from GitHub, generates a website with Jekyll, and moves it somewhere to be published. Use this to run your own GitHub Pages-style web server. Great for when you need to serve your websites behind a firewall, need extra server-level features like HTTP basic auth (see below for an NGINX config with basic auth), or want to host your site directly on a CDN or file host like S3. It's cutomizable with two user-configurable shell scripts and a config file.</p>
-          <p><a class="btn" href="#">View code &raquo;</a></p>
-        </div>
+          <p><a class="btn" href="jekyllDir" >View code &raquo;</a></p>        </div>
       </div>
 
       <hr>
@@ -115,16 +108,9 @@
             <div class="nav-collapse collapse">
               <ul class="nav">
                 <li class="active"><a href="/" class='home'>Home</a></li>
-                <li><a href="addarepo" class="addarepo">Add a Repo</a></li>
                 <li><a href="about" class='about'>About</a></li>
                 <li><a href="contact" class='contact'>Contact</a></li>
               </ul>
-              <form class="navbar-form pull-right">
-                <div class="github-button">    <div style="float right">
-      {{loginbuttons align="right"}}
-    </div>
-</div>
-              </form>
             </div><!--/.nav-collapse -->
           </div>
         </div>
@@ -132,19 +118,63 @@
     </template>
 
     <template name="addarepo">
-      <h1>Add a Repo Genius</h1>
+      <div class="pageTitle">
+        Add a Repo Genius
+      </div>
       {{>script_tags}}
       {{>menu_bar}}
     </template>
 
+    <template name="underscoreDir">
+      <div class="pageTitle">
+        Underscore.js
+        <h2>documentcloud</h2>
+      </div>
+      {{>script_tags}}
+      {{>menu_bar}}
+      {{>repo_files}}
+    </template>
+
+    <template name="jekyllDir">
+      <div class="pageTitle">
+        jekyll-hook
+      </div>
+      {{>script_tags}}
+      {{>menu_bar}}
+      {{>repo_files}}
+    </template>
+
+    <template name="underscorejs">
+      <div class="pageTitle sourcecode">
+        underscore.js
+      </div>
+      {{>script_tags}}
+      <div class="codebox">
+        {{>sourcecode}}
+      </div>
+    </template>
+
+    <template name="bootstrapDir">
+      <div class="pageTitle">
+        Bootstrap.js
+      </div>
+      {{>script_tags}}
+      {{>menu_bar}}
+      {{>repo_files}}
+    </template>
+
     <template name="about">
-      <h1>About</h1>
+      <div class="pageTitle">
+        About
+      </div>
       {{>script_tags}}
       {{>menu_bar}}
     </template>
 
     <template name="contact">
-      <h1>Contact 3 Divs</h1>
+      <div class="pageTitle">
+        Contact 3 Divs
+      </div>
       {{>script_tags}}
       {{>menu_bar}}
     </template>
@@ -166,7 +196,6 @@
       <script src="./assets/js/bootstrap-collapse.js"></script>
       <script src="./assets/js/bootstrap-carousel.js"></script>
       <script src="./assets/js/bootstrap-typeahead.js"></script>
-
     </template>
 
     <template name="3divs-login">
@@ -187,16 +216,26 @@
     </div>
   </template>
 
-  <template name='underscoreDir'>
-    var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
+  <template name='repo_files'>
+    <div class="filelist">
+    <ul>
+      <li><a href="#">test</a></li>
+      <li><a href="#">CNAME</a></li>
+      <li><a href="#">CONTRIBUTING.md</a></li>
+      <li><a href="#">LICENSE</a></li>
+      <li><a href="#">README.md</a></li>
+      <li><a href="#">Rakefile</a></li>
+      <li><a href="#">index.html</a></li>
+      <li><a href="#">package.json</a></li>
+      <li><a href="#">underscore-min.js</a></li>
+      <li><a href="underscorejs" class="underscorejs">underscore.js</a></li>
+    </ul>
+    </div>
 
-    for (var i = 0; i < files.length; i++) {
-      Files.insert({name: files[i][0], path: files[i][1]});
-    }
-
-    {{#each files}}
-      {{>file_listing}}
+<!--     {{#each files}}
+      <li>file: {{>file_listing}}</li>
     {{/each}}
+ -->
   </template>
 
   <template name="file_listing">
