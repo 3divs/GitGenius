@@ -1,46 +1,35 @@
 
-
-
 var cred = 'client_id=eb9827e7a7daab7678ce&client_secret=b596b7ca0af0f554fe396e81cd647ebe4b0ebb4e';
-
-
-  // var getRepolistforUser = function(user) {
-  //   $.ajax('https://api.github.com/users/' + user + '/repos?' + cred, {
-  //     contentType: 'application/json',
-  //     dataType: 'jsonp',
-  //     success: function(results){
-  //       repos = [];
-  //       //var somedata = results.data.content;
-  //       for(var i = 0; i < results.data.length; i++) {
-  //         var repoName = results.data[i].name;
-  //         repos.push(repoName);
-  //       };
-  //       console.log(repos);
-  //     },
-  //     error: function() {
-  //       console.log('error getting reposlist')
-  //     }
-  //   });
-  // };
-
-  // getRepolistforUser('magee');
-
 
   var getFilesForRepo = function(url) {
     var link = url.split('/');
     var repo = link[link.length - 1];
     var user = link[link.length - 2];
-    $.ajax('https://api.github.com/repos/' + user + '/' + repo + '/contents?recursive=1' + cred, {
+    $.ajax('https://api.github.com/repos/' + user + '/' + repo + '/contents?' + cred, {
       contentType: 'application/json',
       dataType: 'jsonp',
       success: function(results){
         var somedata = results.data;
-        console.log('some data', somedata, 'length', somedata.length);
-        // for(var i = 0; i < somedata.length; i++) {
-        //   var tempURL = somedata[i].url;
-        //   console.log('url', tempURL);
-        //   var content = getFileContents(tempURL);
-        // };
+        console.log('some data', somedata);
+        for(var i = 0; i < somedata.length; i++) {
+          var tempURL = somedata[i].git_url;
+          console.log('url', tempURL);
+            Files.findAndModify({
+              query : {
+                'url' : tempURL
+              },
+              update : {
+                'repository' : repo,
+                'repositoryOwner' : user,
+                'fileName' : somedata[i].name,
+                'filePath' : somedata[i].path,
+                'url' : tempURL,
+                'content' : getFileContents(tempURL),
+                'dateUploaded' : new Date()
+              },
+              upsert: true
+            })
+        };
       },
       error: function() {
         console.log('error getting reposlist')
@@ -57,7 +46,10 @@ var cred = 'client_id=eb9827e7a7daab7678ce&client_secret=b596b7ca0af0f554fe396e8
       dataType: 'jsonp',
       success: function(results){
         bitContent = results.data.content;
+        // console.log('bitContent', bitContent);
         var plainContent = decode64(bitContent);
+        // console.log(plainContent);
+        console.log('results', results);
         return plainContent;
       },
       error: function() {
