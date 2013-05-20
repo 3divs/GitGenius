@@ -9,21 +9,6 @@
       Files.insert({name: files[i][0], path: files[i][1]});
     }
     </script>
-
-    <script>
-      var Firebase = require('firebase');
-      var myRootRef = new Firebase('https://gitgenius.meteor.com/');
-        myRootRef.set("hello world!");
-
-      var github = new Github({
-        username: "magee",
-        password: "Scuffy01",
-        auth: "basic"
-      });
-
-      var repo = github.getRepo('3Divs', 'gitgenius');
-      repo.show(function(err, repo) {});
-    </script>
     <script src="https://test.hypothes.is/app/embed.js"></script>
     <meta name="description" content="">
     <meta name="author" content="">
