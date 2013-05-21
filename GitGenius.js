@@ -36,9 +36,10 @@ if (Meteor.isClient) {
       Meteor.Router.to('/home');
     },
 
-    'click .input-block-level': function(){
+    'submit .form-signin': function(){
       var url = $('.input-block-level').val()
       Meteor.getFilesForRepo(url);
+      Meteor.Router.to('/')
     } 
   };
 
@@ -68,8 +69,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    var GitHubAPI = 'https://api.github.com',
-    cred = 'client_id=eb9827e7a7daab7678ce&client_secret=b596b7ca0af0f554fe396e81cd647ebe4b0ebb4e';
+    var cred = 'client_id=eb9827e7a7daab7678ce&client_secret=b596b7ca0af0f554fe396e81cd647ebe4b0ebb4e';
 
     // call this method upon github repo URL submission to get all 
     Meteor.getFilesForRepo = function (url){
@@ -78,12 +78,13 @@ if (Meteor.isServer) {
       user = link[link.length - 2],
       fut = new Future();
 
-      Meteor.http.get(GitHubAPI + '/repos/' + user + '/' + repo + '/contents?recursive=1?' + cred, {
+      Meteor.http.get('https://api.github.com/repos/' + user + '/' + repo + '/contents?recursive=1?' + cred, {
         contentType: 'application/json',
         dataType: 'jsonp'
         }, function (err, res) {
           if (err) throw 'failed callback';
-        });
+          console.log(res.data);
+      });
         var result = fut.wait();
         if (result.statusCode === 200) {
           var somedata = result.data;
@@ -96,7 +97,7 @@ if (Meteor.isServer) {
                 'url' : tempURL
               },
               update : {
-                'repository' : repo,
+                'repository' : 'http://github.com/' + user + '/' + repo,
                 'repositoryOwner' : user,
                 'fileName' : somedata[i].name,
                 'filePath' : somedata[i].path,
