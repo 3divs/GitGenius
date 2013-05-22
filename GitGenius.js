@@ -13,7 +13,8 @@ if (Meteor.isClient) {
     '/bootstrapDir': 'bootstrapDir',
     '/about': 'about',
     '/contact': 'contact',
-    '/underscorejs': 'underscorejs'
+    '/repopage': 'repopage',
+
   });
 
 
@@ -51,23 +52,19 @@ if (Meteor.isClient) {
         Meteor.Router.to('/bootstrapDir');
     },
     'submit .form-signin': function(e){
-      var url = $('.input-block-level').val();
       e.preventDefault();
+      var url = $('.input-block-level').val();
       getFilesForRepo(url);
-      Meteor.router.to('/')
+      $('.input-block-level').val('');
+      Meteor.Router.to('/repopage')
     }
   }
 
-  Template.repo_files.events = {
-    'click .underscoreDir': function() {
-        Meteor.Router.to('/underscorejs');
-    }
-  };
-
-
-  Template.underscoreDir.files = function() {
-    return Files.find({});
-  };
+  // Template.repo_files.events = {
+  //   'click .underscoreDir': function() {
+  //       Meteor.Router.to('/underscorejs');
+  //   }
+  // };
 
 
   // we call this method upon github repo URL submission to get the repo tree
@@ -82,16 +79,29 @@ if (Meteor.isClient) {
       }, function (err, res) {
         if (err) throw 'failed callback';
         for (var i = 0; i < res.data.length; i++) {
-          Files.insert({
-            'repoLink' : 'http://github.com/' + user + '/' + repo,
-            'repositoryOwner' : user,
-            'fileName' : res.data[i].name,
-            'sha' : res.data[i].sha,
-            'fileType' : res.data[i].type,
-            'fileURL' : res.data[i].git_url,
-            'filePath': res.data[i].path,
-            'updates' : new Date()
-          }); 
+          var temp = Files.findOne({sha: res.data[i].sha});
+          console.log('temp', temp);
+          if (temp) {
+            Files.update({
+              '_id': res.data[i]._id             
+            },
+            {
+              'fileURL': res.data[i].git_url,
+              'sha': res.data[i].sha,
+              'updates': new Date()
+            });
+          } else {
+            Files.insert({
+              'repoLink' : 'http://github.com/' + user + '/' + repo,
+              'repositoryOwner' : user,
+              'fileName' : res.data[i].name,
+              'sha' : res.data[i].sha,
+              'fileType' : res.data[i].type,
+              'fileURL' : res.data[i].git_url,
+              'filePath': res.data[i].path,
+              'updates' : new Date()
+            }); 
+          };
         };
       }
     );
