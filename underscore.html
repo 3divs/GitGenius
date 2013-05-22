@@ -1,9 +1,9 @@
 <template name='underscoreDir_old'>
-  var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
+<!--   var files = [["docs", "#"], ["CNAME", "#"], ["CONTRIBUTING.md", "#"], ["LICENSE", "#"], ["README.md", "#"], ["Rakefile", "#"], ["index.html", "#"], ["package.json", "#"], ["underscore-min.js", "#"], ["underscore.js", "./underscorejs"]]
 
   for (var i = 0; i < files.length; i++) {
     Files.insert({name: files[i][0], path: files[i][1]});
-  }
+  } -->
 
   {{#each files}}
     {{>file_listing}}
