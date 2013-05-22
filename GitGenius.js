@@ -106,10 +106,10 @@ if (Meteor.isClient) {
       dataType: 'jsonp'
     }, function (err, res) {
       if (err) throw 'failed callback';
-      bitContent = results.data.content;
+      bitContent = res.data.content;
       var plainContent = decode64(bitContent);
-      console.log('results', results);
-      return plainContent;          
+      console.log('content', plainContent);
+      return plainContent; // this is the plain text content that we need to render...      
     });
   };
 
