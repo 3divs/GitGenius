@@ -123,6 +123,16 @@ if (Meteor.isClient) {
     });
   };
 
+  var getDirTree = function(fileURL) {
+    Meteor.http.get(fileURL + '?' + cred, {
+      contentType: 'application/json',
+      dataType: 'jsonp'
+    }, function (err, res) {
+      if (err) throw 'failed callback';
+      console.log(res.data.tree); // TODO: MODIFY THIS FUNCTION, MAGEE!!!
+    })
+  }
+
   var _utf8_decode = function (utftext) {
     var string = "";
     var i = 0;
