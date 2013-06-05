@@ -54,17 +54,14 @@ if (Meteor.isClient) {
     'submit .form-signin': function(e){
       e.preventDefault();
       var url = $('.input-block-level').val();
+      if (url.split('')[url.length - 1] === 'git') 
+        throw new Error('Please paste the browser url to this repository. It should look something like this: https://github.com/visionmedia/express');
       getFilesForRepo(url);
       $('.input-block-level').val('');
-      Meteor.Router.to('/repopage')
+      Meteor.Router.to('/repopage/:repositoryOwner/:repo')
     }
   }
 
-  // Template.repo_files.events = {
-  //   'click .underscoreDir': function() {
-  //       Meteor.Router.to('/underscorejs');
-  //   }
-  // };
 
 
   // we call this method upon github repo URL submission to get the repo tree
@@ -93,6 +90,7 @@ if (Meteor.isClient) {
           } else {
             Files.insert({
               'repoLink' : 'http://github.com/' + user + '/' + repo,
+              'repo' : repo,
               'repositoryOwner' : user,
               'fileName' : res.data[i].name,
               'sha' : res.data[i].sha,
