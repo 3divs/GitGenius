@@ -24,9 +24,9 @@
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="./assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="./assets/ico/favicon.png">
   </head>
 
   <body>
@@ -103,7 +103,7 @@
       {{>menu_bar}}
     </template>
 
-    <template name="underscoreDir">
+<!--    <template name="underscoreDir">
       <div class="pageTitle">
         Underscore.js
         <h2>documentcloud</h2>
@@ -113,7 +113,7 @@
       {{>repo_files}}
     </template>
 
-    <template name="jekyllDir">
+     <template name="jekyllDir">
       <div class="pageTitle">
         jekyll-hook
       </div>
@@ -132,7 +132,7 @@
       </div>
     </template>
 
-    <template name="bootstrapDir">
+    <template name="bootstrap">
       <div class="pageTitle">
         Bootstrap.js
       </div>
@@ -140,7 +140,8 @@
       {{>menu_bar}}
       {{>repo_files}}
     </template>
-
+ -->
+ 
     <template name="about">
       <h1>About</h1>
       <div>
@@ -203,28 +204,4 @@
     </div>
   </template>
 
-  <template name='repo_files'>
-    <div class="filelist">
-    <ul>
-      <li><a href="#">test</a></li>
-      <li><a href="#">CNAME</a></li>
-      <li><a href="#">CONTRIBUTING.md</a></li>
-      <li><a href="#">LICENSE</a></li>
-      <li><a href="#">README.md</a></li>
-      <li><a href="#">Rakefile</a></li>
-      <li><a href="#">index.html</a></li>
-      <li><a href="#">package.json</a></li>
-      <li><a href="#">underscore-min.js</a></li>
-      <li><a href="underscorejs" class="underscorejs">underscore.js</a></li>
-    </ul>
-    </div>
-
-<!--     {{#each files}}
-      <li>file: {{>file_listing}}</li>
-    {{/each}}
- -->
-  </template>
-
-  <template name="file_listing">
-    <a href="{{url}}">{{name}}</a>
-  </template>
+ 

@@ -7,26 +7,35 @@ if (Meteor.isClient) {
 
   Meteor.Router.add({
     '/': 'home',
-    '/addarepo': 'addarepo',
+    // '/addarepo': 'addarepo',
     '/underscoreDir': 'underscoreDir',
     '/jekyllDir': 'jekyllDir',
     '/bootstrapDir': 'bootstrapDir',
     '/about': 'about',
     '/contact': 'contact',
-    '/repopage': 'repopage',
-
-  });
+    '/repo': 'repo',
+    'repo/:filePath': function(filePath){
+      return somefunction(filePath);
+    }
+/*    '/repo': 'repo',
+    '/repo/:repositoryOwner/:repo': function(repositoryOwner, repo) {
+      // find repo in collection and get ID
+      Files.find({ repo: repo });
+      // assign session variable with repo ID
+      return 'repo/:repositoryOwner/:repo';
+    }
+*/  });
 
 
   Template.menu_bar.events = {
 
-    'click .addarepo': function() {
+/*    'click .addarepo': function() {
       Meteor.Router.to('/addarepo');
     },
-
     'click .underscoreDir': function() {
       Meteor.Router.to('/underscoreDir');
     },
+*/
 
     'click .about': function() {
       Meteor.Router.to('/about');
@@ -38,7 +47,7 @@ if (Meteor.isClient) {
 
     'click .home': function() {
       Meteor.Router.to('/home');
-    },
+    }
   };
 
   Template.home.events = {
@@ -54,33 +63,32 @@ if (Meteor.isClient) {
     'submit .form-signin': function(e){
       e.preventDefault();
       var url = $('.input-block-level').val();
-      if (url.split('')[url.length - 1] === 'git') 
+      if (url.split('.')[url.length - 1] === 'git') {
         throw new Error('Please paste the browser url to this repository. It should look something like this: https://github.com/visionmedia/express');
-      getFilesForRepo(url);
+      }
+      Meteor.getFilesForRepo(url);
       $('.input-block-level').val('');
-      Meteor.Router.to('/repopage/:repositoryOwner/:repo')
     }
-  }
+  };
 
 
 
   // we call this method upon github repo URL submission to get the repo tree
-  var getFilesForRepo = function (url){
+  Meteor.getFilesForRepo = function (url){
     var link = url.split('/'),
     repo = link[link.length - 1],
     user = link[link.length - 2];
-
     Meteor.http.get('https://api.github.com/repos/' + user + '/' + repo + '/contents?' + cred, {
       contentType: 'application/json',
       dataType: 'jsonp'
       }, function (err, res) {
         if (err) throw 'failed callback';
+        console.log('error', err, 'res', res);
         for (var i = 0; i < res.data.length; i++) {
           var temp = Files.findOne({sha: res.data[i].sha});
-          console.log('temp', temp);
           if (temp) {
             Files.update({
-              '_id': res.data[i]._id             
+              '_id': res.data[i]._id
             },
             {
               'fileURL': res.data[i].git_url,
@@ -98,16 +106,18 @@ if (Meteor.isClient) {
               'fileURL' : res.data[i].git_url,
               'filePath': res.data[i].path,
               'updates' : new Date()
-            }); 
-          };
+            });
+          }
         };
       }
     );
+//      Meteor.Router.to('/repo/' + user + '/' + repo);
+      Meteor.Router.to('/repo/');
   };
 
 
   // call this function any time a user clicks a link to view one of our files
-  var getFileContents = function (fileURL){ // make sure the 'fileURL' is stored as data in the file link
+  Meteor.getFileContents = function (fileURL){ // make sure the 'fileURL' is stored as data in the file link
     var bitContent;
     Meteor.http.get(fileURL + "?" + cred, {
       contentType: 'application/json',
@@ -121,15 +131,16 @@ if (Meteor.isClient) {
     });
   };
 
-  var getDirTree = function(fileURL) {
+  Meteor.getDirTree = function(fileURL) {
     Meteor.http.get(fileURL + '?' + cred, {
       contentType: 'application/json',
       dataType: 'jsonp'
     }, function (err, res) {
       if (err) throw 'failed callback';
       console.log(res.data.tree); // TODO: MODIFY THIS FUNCTION, MAGEE!!!
-    })
-  }
+    });
+    Meteor.Router.to('/repo/' + filePath);
+  };
 
   var _utf8_decode = function (utftext) {
     var string = "";
@@ -155,9 +166,8 @@ if (Meteor.isClient) {
         string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
         i += 3;
       }
-
     }
-    
+
     return string;
   };
 
@@ -197,14 +207,13 @@ if (Meteor.isClient) {
     return output;
 
   };
+
 }
 
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
 
-
-  
   });
 }
 
