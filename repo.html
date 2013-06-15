@@ -1,0 +1,26 @@
+<template name="repo">
+  {{>script_tags}}
+  {{>menu_bar}}
+
+  {{#each files}}
+    {{>file_listing}}
+  {{/each}}
+
+</template>
+
+<template name="file_listing">
+  <a href="#" class='fileLinks' data-type="{{fileType}}" data-api="{{fileURL}}">{{repo}} : {{filePath}} ({{fileType}})</a><br>
+</template>
+
+<!--   <a href="#">docs</a>
+  <a href="#">test</a>
+  <a href="#">CNAME</a>
+  <a href="#">CONTRIBUTING.md</a>
+  <a href="#">LICENSE</a>
+  <a href="#">README.md</a>
+  <a href="#">Rakefile</a>
+  <a href="#">index.html</a>
+  <a href="#">package.json</a>
+  <a href="#">underscore-min.js</a>
+  <a href="./underscorejs">underscore.js</a>
+ -->
