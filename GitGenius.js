@@ -87,7 +87,6 @@ if (Meteor.isClient) {
   // we call this method upon github repo URL submission to get the repo tree
   Meteor.getFilesForRepo = function (url){
     var link = url.split('/');
-    debugger;
     console.log("link: ",link[link.length - 1]);
     if (link[link.length - 1].indexOf('git') !== -1){
       var repo = link[link.length - 1].replace('.git', '');
