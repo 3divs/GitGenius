@@ -2,14 +2,28 @@
   {{>script_tags}}
   {{>menu_bar}}
 
+  {{#each repos}}
+    {{>repo_listing}}
+  {{/each}}
+
+</template>
+
+<template name="files">
+  {{>script_tags}}
+  {{>menu_bar}}
+
   {{#each files}}
     {{>file_listing}}
   {{/each}}
 
 </template>
 
+<template name="repo_listing">
+  <a href="#" class='repoLinks' data-owner="{{repositoryOwner}}" data-repo="{{repo}}" data-api="{{fileURL}}">{{repo}} </a><br>
+</template>
+
 <template name="file_listing">
-  <a href="#" class='fileLinks' data-type="{{fileType}}" data-api="{{fileURL}}">{{repo}} : {{filePath}} ({{fileType}})</a><br>
+  <a href="#" class='fileLinks' data-type="{{fileType}}" data-owner="{{repositoryOwner}}" data-name="{{filePath}}" data-repo="{{repo}}" data-api="{{fileURL}}">{{repo}} : {{filePath}} ({{fileType}})</a><br>
 </template>
 
 <!--   <a href="#">docs</a>

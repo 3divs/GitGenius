@@ -1,9 +1,8 @@
 Files = new Meteor.Collection("files");
+Repos = new Meteor.Collection("repos");
 var cred = 'client_id=eb9827e7a7daab7678ce&client_secret=b596b7ca0af0f554fe396e81cd647ebe4b0ebb4e';
 
-
 if (Meteor.isClient) {
-
 
   Meteor.Router.add({
     '/': 'home',
@@ -14,17 +13,29 @@ if (Meteor.isClient) {
     '/about': 'about',
     '/contact': 'contact',
     '/repo': 'repo',
-    'repo/:filePath': function(filePath){
-      return somefunction(filePath);
+//    '/repos/:repositoryOwner/:repo/:filePath': function(repositoryOwner, repo, filePath) {
+    '/repo/:repo': 'files',
+    '/repo/:repo/:file': function(){
+      return 'sourcecode'
     }
-/*    '/repo': 'repo',
-    '/repo/:repositoryOwner/:repo': function(repositoryOwner, repo) {
-      // find repo in collection and get ID
-      Files.find({ repo: repo });
-      // assign session variable with repo ID
-      return 'repo/:repositoryOwner/:repo';
-    }
-*/  });
+    // function(repositoryOwner, repo, filePath) {
+    //   var url = Files.findOne({ repo: repo, filePath: filePath }).url;
+    //   var type = Files.findOne({ repo: repo, filePath: filePath }).type;
+    //   if (type === 'file') {
+    //     console.log("url: ", url, " type: ", type);
+    //     Session.set('content', Meteor.getFileContents(url));
+    //     return 'sourcecode';
+    //   } else if (type === 'dir') {
+    //     console.log("it's a dir");
+    //     return 'repo';
+    //   } else if (type === 'tree') {
+    //     console.log("it's a tree");
+    //     return 'repo';
+    //   } else {
+    //     console.log("it's an error");
+    //   }
+//    } // end repo/owner/path
+  });
 
 
   Template.menu_bar.events = {
@@ -75,17 +86,33 @@ if (Meteor.isClient) {
 
   // we call this method upon github repo URL submission to get the repo tree
   Meteor.getFilesForRepo = function (url){
-    var link = url.split('/'),
-    repo = link[link.length - 1],
-    user = link[link.length - 2];
+    var link = url.split('/');
+    debugger;
+    console.log("link: ",link[link.length - 1]);
+    if (link[link.length - 1].indexOf('git') !== -1){
+      var repo = link[link.length - 1].replace('.git', '');
+      console.log("repoURL", repo);
+      var user = link[link.length - 2];
+    } else{
+      var repo = link[link.length - 1];
+      var user = link[link.length - 2];
+    }
     Meteor.http.get('https://api.github.com/repos/' + user + '/' + repo + '/contents?' + cred, {
       contentType: 'application/json',
       dataType: 'jsonp'
       }, function (err, res) {
         if (err) throw 'failed callback';
         console.log('error', err, 'res', res);
+        var temp = Files.findOne({sha: res.data[0].sha});
+        if (!temp) {
+          Repos.insert({
+            'repoLink' : 'http://github.com/' + user + '/' + repo,
+            'repo' : repo,
+            'repositoryOwner' : user,
+          });
+        }
+
         for (var i = 0; i < res.data.length; i++) {
-          var temp = Files.findOne({sha: res.data[i].sha});
           if (temp) {
             Files.update({
               '_id': res.data[i]._id
@@ -96,7 +123,10 @@ if (Meteor.isClient) {
               'updates': new Date()
             });
           } else {
+
+            var repo_id = Repos.findOne({'repo': repo})._id;
             Files.insert({
+              'repo_id'  : repo_id,
               'repoLink' : 'http://github.com/' + user + '/' + repo,
               'repo' : repo,
               'repositoryOwner' : user,
@@ -126,20 +156,21 @@ if (Meteor.isClient) {
       if (err) throw 'failed callback';
       bitContent = res.data.content;
       var plainContent = decode64(bitContent);
-      console.log('content', plainContent);
-      return plainContent; // this is the plain text content that we need to render...      
+      Session.set('contents', plainContent);
+      return plainContent; // this is the plain text content that we need to render...
     });
   };
 
-  Meteor.getDirTree = function(fileURL) {
+  Meteor.getDirTree = function(fileURL, fileName) {
     Meteor.http.get(fileURL + '?' + cred, {
       contentType: 'application/json',
       dataType: 'jsonp'
     }, function (err, res) {
       if (err) throw 'failed callback';
       console.log(res.data.tree); // TODO: MODIFY THIS FUNCTION, MAGEE!!!
+      console.log(res.data);
+      Meteor.Router.to('/repo/' + fileName);
     });
-    Meteor.Router.to('/repo/' + filePath);
   };
 
   var _utf8_decode = function (utftext) {
@@ -213,7 +244,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-
+    Future = Npm.require('fibers/future');
   });
 }
 
